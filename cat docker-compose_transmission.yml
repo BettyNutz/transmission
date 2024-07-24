@@ -1,0 +1,23 @@
+services:
+  transmission:
+    image: linuxserver/transmission
+    container_name: transmission
+    environment:
+      - PUID=1001  # Set to your user ID
+      - PGID=1001  # Set to your group ID
+      - TZ=Asia/Singapore  # Set to your timezone
+
+    volumes:
+      - /home/dockeruser/Downloads/complete:/downloads/complete
+    ports:
+      - 9091:9091  # Transmission web UI
+      - 51413:51413  # Transmission peer listening port
+      - 51413:51413/udp
+    restart: unless-stopped
+    networks:
+      - p2p_net
+    userns_mode: "shared_ns"
+
+networks:
+  p2p_net:
+    external: true
